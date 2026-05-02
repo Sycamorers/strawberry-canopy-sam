@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-MODEL_DIR = Path(os.environ.get("SAMDAM_MODEL_DIR", PROJECT_ROOT / "models_wts"))
+MODEL_DIR = Path(os.environ.get("CANOPY_SAM_MODEL_DIR", PROJECT_ROOT / "models_wts"))
 MOBILE_SAM_V2_ROOT = PROJECT_ROOT / "SAMs" / "MobileSAM" / "MobileSAMv2"
 EFFICIENT_SAM_ROOT = PROJECT_ROOT / "SAMs" / "EfficientSAM"
 
@@ -26,6 +26,6 @@ def require_file(path: Path, label: str) -> str:
     """Return a string path, raising a clear error when a local asset is missing."""
     if not path.exists():
         raise FileNotFoundError(
-            f"Missing {label}: {path}. Place the file there or set SAMDAM_MODEL_DIR."
+            f"Missing {label}: {path}. Place the file there or set CANOPY_SAM_MODEL_DIR."
         )
     return str(path)

@@ -44,13 +44,13 @@ from SAMs.MobileSAM.MobileSAMv2.mobilesamv2 import SamPredictor as mobile_sam_mo
 
 
 # import funcs
-from samdam.plot3d import get_3d_rst
-from samdam.box_selection import filter_boxes_at_edges
-from samdam.point_selection import select_points,get_points_based_on_strategy
-from samdam.overlap import is_overlap_bm, calculate_overlap_area_bm,calculate_overlap_area_bb
-from samdam.save_files import save_combined_binary_masks,save_masks_as_npy, save_image_with_masks,save_yolo_format_boxes
-from samdam.utils import draw_points_on_image,is_inside,find_relative_position,apply_masks_to_image,load_models,setup_directories,coco_mask_to_binary,calculate_iou,load_and_process_predicted_mask,calculate_and_save_iou
-from samdam.paths import require_file, weight_path
+from canopy_prompt_sam.plot3d import get_3d_rst
+from canopy_prompt_sam.box_selection import filter_boxes_at_edges
+from canopy_prompt_sam.point_selection import select_points,get_points_based_on_strategy
+from canopy_prompt_sam.overlap import is_overlap_bm, calculate_overlap_area_bm,calculate_overlap_area_bb
+from canopy_prompt_sam.save_files import save_combined_binary_masks,save_masks_as_npy, save_image_with_masks,save_yolo_format_boxes
+from canopy_prompt_sam.utils import draw_points_on_image,is_inside,find_relative_position,apply_masks_to_image,load_models,setup_directories,coco_mask_to_binary,calculate_iou,load_and_process_predicted_mask,calculate_and_save_iou
+from canopy_prompt_sam.paths import require_file, weight_path
 
 
 

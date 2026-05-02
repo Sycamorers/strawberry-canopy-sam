@@ -108,8 +108,8 @@ def load_models(which_sam="SAM"):
     """Loads the YOLO and SAM models."""
     # sb_yolo_model = YOLO('./models_wts/sb_new.pt')
     # plt_yolo_model = YOLO('./models_wts/plt.pt')
-    sb_yolo_model = YOLO(require_file(weight_path("SAMDAM_fruit.pt"), "fruit YOLO weight"))
-    plt_yolo_model = YOLO(require_file(weight_path("SAMDAM_plant.pt"), "plant YOLO weight"))
+    sb_yolo_model = YOLO(require_file(weight_path("fruit_detector.pt"), "fruit YOLO weight"))
+    plt_yolo_model = YOLO(require_file(weight_path("plant_detector.pt"), "plant YOLO weight"))
     device = "cuda" if torch.cuda.is_available() else "cpu"
     sam_predictor = None
     if which_sam == "SAM":

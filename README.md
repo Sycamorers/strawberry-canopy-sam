@@ -1,12 +1,36 @@
-# SAM-DAM Berry Segmentation
+# Strawberry Canopy SAM
 
-This repository contains the cleaned local code for berry and plant segmentation experiments based on YOLO detectors, SAM-style segmentation models, IoU evaluation, and depth-based 3D visualization.
+Code for strawberry canopy segmentation and canopy-volume estimation using YOLOv11-guided Segment Anything Model (SAM) prompts and Depth Anything v2 (DAv2).
 
-Paper link: https://www.sciencedirect.com/science/article/pii/S0168169925006076
+This repository is organized around the paper:
+
+**Advanced canopy size estimation in strawberry production: a machine learning approach using YOLOv11 and SAM**
+
+Zijing Huang, Won Suk Lee, Peng Yang, Yiannis Ampatzidis, Shinsuke Agehara, Natalia A. Peres
+
+*Computers and Electronics in Agriculture*, 236, 110501, 2025
+
+DOI: https://doi.org/10.1016/j.compag.2025.110501
+
+## Overview
+
+The project estimates strawberry canopy size without training a dedicated segmentation model. It uses two YOLOv11 detectors to generate prompts for SAM:
+
+- a plant/weed detector supplies plant bounding-box prompts;
+- a flower/fruit detector supplies auxiliary fruit detections for background point prompts;
+- SAM produces canopy masks from box, point, and preliminary mask prompts;
+- DAv2 adds monocular depth maps so 2D canopy masks can be converted into relative 3D canopy-volume estimates.
+
+The main contribution is an automated prompt selection algorithm with two variants:
+
+- **Vanilla prompt selection**: selects exclusive background points from overlap regions between plant boxes and flower/fruit boxes, using relative positions such as top-left, top-right, bottom-left, and bottom-right.
+- **Refined prompt selection**: builds a hollow concentric region from preliminary SAM masks, filters candidate fruit detections near canopy edges, and samples more reliable background points from homogeneous overlap regions.
+
+Reported paper results include IoU of about **0.913** for the vanilla strategy and **0.924** for the refined strategy. The refined method outperformed traditional training-free segmentation baselines and supervised segmentation models trained with limited annotations.
 
 ## Repository Layout
 
-- `samdam/`: shared segmentation, prompt-selection, overlap, IoU, saving, and 3D helper functions.
+- `canopy_prompt_sam/`: shared segmentation, prompt-selection, overlap, IoU, saving, and 3D helper functions.
 - `scripts/`: runnable benchmark and utility scripts.
 - `SAMs/`: minimal vendored EfficientSAM and MobileSAM source needed by the benchmark code. Model weights are not included.
 - `examples/GNV_benchmark_data_coco/`: small COCO-format sample dataset copied from the original local project.
@@ -21,12 +45,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The benchmark expects model weights in `models_wts/` unless `SAMDAM_MODEL_DIR` is set:
+The benchmark expects model weights in `models_wts/` unless `CANOPY_SAM_MODEL_DIR` is set:
 
 ```text
 models_wts/
-  SAMDAM_fruit.pt
-  SAMDAM_plant.pt
+  fruit_detector.pt
+  plant_detector.pt
   sam_vit_h_4b8939.pth
   l2.pt
   mobile_sam.pt
@@ -46,16 +70,16 @@ SAMs/MobileSAM/MobileSAMv2/PromptGuidedDecoder/
 
 ## Run
 
-Run the default SAM-DAM benchmark configuration on the included sample data:
+Run the default refined canopy benchmark configuration on the included sample data:
 
 ```bash
-bash scripts/run_samdam_benchmark.sh
+bash scripts/run_canopy_benchmark.sh
 ```
 
 Or call the benchmark directly:
 
 ```bash
-python scripts/run_samdam_benchmark.py \
+python scripts/run_canopy_benchmark.py \
   --pointcase G \
   --method 2p_8 \
   --pre_mask with_pre_mask \
@@ -87,6 +111,15 @@ python scripts/generate_depth_images.py \
   --input_dir examples/GNV_benchmark_data_coco \
   --output_dir outputs/depth/GLPN
 ```
+
+## Method Summary
+
+1. Detect strawberry plants and weeds with YOLOv11. Only plant boxes are used downstream; weed labels help reduce plant/weed confusion during detection.
+2. Detect flowers and fruit ripeness stages with YOLOv11. Fruit detections guide the selection of exclusive background prompts.
+3. Generate preliminary SAM masks using plant boxes.
+4. Select background point prompts using either the vanilla overlap strategy or the refined hollow-region strategy.
+5. Run SAM again with plant boxes, selected points, and preliminary mask prompts to obtain canopy masks.
+6. Estimate monocular depth with DAv2 and sum depth values inside each canopy mask for relative canopy volume.
 
 ## Notes
 

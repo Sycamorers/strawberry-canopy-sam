@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-PYTHON_SCRIPT_PATH="scripts/run_samdam_benchmark.py"
+PYTHON_SCRIPT_PATH="scripts/run_canopy_benchmark.py"
 
 POINTCASES=("G")
 METHODS=("2p_8")
