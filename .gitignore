@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local data and generated outputs
+data/
+outputs/*
+!outputs/.gitkeep
+iou_results/
+iou_results_other/
+nohup.out
+
+# Model weights and checkpoints
+models_wts/*
+!models_wts/.gitkeep
+*.pt
+*.pth
+*.onnx
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/

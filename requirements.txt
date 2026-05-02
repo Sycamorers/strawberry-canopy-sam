@@ -1,0 +1,12 @@
+numpy
+opencv-python
+Pillow
+matplotlib
+scipy
+scikit-image
+pycocotools
+torch
+torchvision
+transformers
+ultralytics
+segment-anything

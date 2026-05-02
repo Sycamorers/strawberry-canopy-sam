@@ -1,0 +1,2 @@
+"""MobileSAM vendored source."""
+

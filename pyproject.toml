@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "samdam-berry-segmentation"
+version = "0.1.0"
+description = "SAM-DAM berry and plant segmentation benchmark code."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy",
+  "opencv-python",
+  "Pillow",
+  "matplotlib",
+  "scipy",
+  "scikit-image",
+  "pycocotools",
+  "torch",
+  "torchvision",
+  "transformers",
+  "ultralytics",
+  "segment-anything",
+]
+
+[tool.setuptools]
+packages = ["samdam"]
